@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Let's do a new history 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{ margin:0; padding:0; }
+
+body{
+    background-image: url(https://cdn.lospec.com/gallery/cats-in-the-blue-lake-731334.gif);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.overlay{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0);
+    transition: 1.5s ease;
+    pointer-events: none;
+}
+
+.mensaje{
+    position: absolute;
+    top: 100px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+.mensaje::after{
+    content:"|";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink{
+    0%,50%,100%{opacity:1;}
+    25%,75%{opacity:0;}
+}
+
+.opciones p{
+    background:black;
+    padding:12px 20px;
+    color:white;
+    border-radius:5px;
+    font-weight:bold;
+    position:absolute;
+}
+
+.p1{ top:450px; left:500px; }
+.p2{ top:450px; left:650px; }
+
+.opciones p:hover{
+    background:gray;
+    cursor:pointer;
+}
+
+.corazones-container{
+    position:fixed;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.corazon{
+    position:absolute;
+    bottom:-50px;
+    animation: flotar linear forwards;
+}
+
+@keyframes flotar{
+    0%{ transform:translateY(0); opacity:1; }
+    100%{ transform:translateY(-100vh); opacity:0; }
+}
+</style>
+
+<script>
+document.addEventListener('mousemove', function(e){
+    const b = document.querySelector('.p1');
+    if(!b) return;
+
+    const r = b.getBoundingClientRect();
+    const dx = e.clientX - (r.left+r.width/2);
+    const dy = e.clientY - (r.top+r.height/2);
+    const d = Math.sqrt(dx*dx+dy*dy);
+
+    if(d < 150){
+        b.style.left = Math.random()*(window.innerWidth-100)+"px";
+        b.style.top = Math.random()*(window.innerHeight-50)+"px";
+    }
+});
+
+const textoInicial = `No quiero volver atrás…
+quiero empezar contigo otra vez.
+
+¿Me lo permitirías? 💘`;
+
+const textoFinal = ``; // 👈 ESCRIBE AQUÍ TU MENSAJE
+
+let i = 0;
+function escribirTexto(texto){
+    const el = document.getElementById("mensaje");
+    el.innerHTML = "";
+    i = 0;
+
+    function escribir(){
+        if(i < texto.length){
+            el.innerHTML += texto.charAt(i);
+            i++;
+            setTimeout(escribir, 40);
+        }
+    }
+    escribir();
+}
+
+function dijoSi(){
+
+    document.querySelector('.opciones').style.display = 'none';
+
+    document.getElementById("overlay").style.background = "rgba(0,0,0,0.6)";
+
+    const audio = document.getElementById("musica");
+    audio.play();
+
+    setTimeout(()=>{
+        escribirTexto(textoFinal);
+    }, 1500);
+
+    setTimeout(()=>{
+        for(let i=0;i<30;i++){ crearElemento(); }
+        setInterval(crearElemento,100);
+    }, 1200);
+}
+
+function crearElemento(){
+    const c = document.querySelector('.corazones-container');
+    const e = document.createElement('div');
+    e.classList.add('corazon');
+
+    e.innerHTML = Math.random()>0.5 ? "🌷" : "❤️";
+    e.style.left = Math.random()*100+"vw";
+    e.style.fontSize = (Math.random()*30+15)+"px";
+    e.style.animationDuration = (Math.random()*3+3)+"s";
+
+    c.appendChild(e);
+    setTimeout(()=>e.remove(),5000);
+}
+
+window.onload = ()=>{
+    const audio = document.getElementById("musica");
+    audio.volume = 0.03; // 👈 volumen de 0.0 a 1.0
+    escribirTexto(textoInicial);
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<audio id="musica" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<div class="opciones">
+    <p class="p1">No :(</p>
+    <p class="p2" onclick="dijoSi()">Sí :D</p>
+</div>
+
+<div class="corazones-container"></div>
+
+<h1 class="mensaje" id="mensaje"></h1>
+
+</body>
+</html>
