@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Let's do a new history 💖</title>
+<title>You're doing a good job 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -141,7 +141,6 @@ body::before {
     }
 }
 
-/* Ajustes para celulares verticales */
 @media (max-width: 600px) {
     body::before {
         background-position: center center;
@@ -170,7 +169,6 @@ body::before {
     }
 }
 
-/* Ajustes para pantallas horizontales pequeñas */
 @media (max-height: 500px) {
     .mensaje {
         top: 5%;
@@ -202,7 +200,6 @@ document.addEventListener('mousemove', function(e) {
     }
 });
 
-/* Evitar que el botón se salga al cambiar el tamaño */
 window.addEventListener('resize', function() {
     const b = document.querySelector('.p1');
     if (!b) return;
@@ -218,12 +215,24 @@ window.addEventListener('resize', function() {
     }
 });
 
-const textoInicial = `No quiero volver atrás…
-quiero empezar contigo otra vez.
+const textoInicial = Feliz cumpleaños muxaxona
 
-¿Me lo permitirías? 💘`;
+¿Me das pastel? 🎂`;
 
-const textoFinal = `Maje que putas como se ve tambien en la laptop se ve raro jaja ha de ser igual por la resolucion de la pantalla`;
+const textoFinal = `Bueno tutis, primero que nada quería felicitarte por tu cumpleaños,
+ojalá que hasta ahora hayas tenido un día bonito o cuando menos calmado,
+puede que sea un día bastante común para ti pero después de todo es un año más que estás avanzando y sin detenerte,
+me pone mucho en qué pensar como este es el segundo cumpleaños que estoy presente en tu vida,
+por lo que me has contado no ha habido mucha gente por mucho tiempo a tu lado y yo en lo personal intento hacer la diferencia con eso, 
+sabes que tú puedes contar conmigo en todo momento y cuando lo necesites, 
+ahora que cumples un año más pues es obvio lo que viene, 
+más responsabilidades y obstáculos que a lo largo de tu vida pueden ir dificultando un poco las cosas, 
+de igual forma siempre supiste cómo afrontar todo eso tu sola y de una manera tan extraordinaria que únicamente tú podrías hacerlo,
+eres increíble de verdad, una persona con muchas cualidades que destacar, pero ojo, eso no significa que siempre tengas que estar tú sola en esas situaciones, 
+que sepas que al menos de mi parte yo quiero estar ahí para apoyarte en cada paso que des, 
+sabes que te aprecio mucho y que después de todo lo único que busca uno para aquellos a quienes aprecia realmente es únicamente lo mejor, 
+fue un verdadero placer para mí el haberte conocido y espero que para ti también lo haya sido, que disfrutes tu día, tqm y guárdame pastel porfi, 
+también te manda saludos tu niño Dante, dijo q feliz cumpleaños a su mami 🥳🎉🎉🎉`;
 
 function escribirTexto(texto) {
     const el = document.getElementById("mensaje");
