@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,99 +7,214 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{ margin:0; padding:0; }
-
-body{
-    background-image: url(https://cdn.lospec.com/gallery/cats-in-the-blue-lake-731334.gif);
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: scroll;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.overlay{
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+    background: #075477;
+}
+
+/* Fondo adaptable a toda la pantalla */
+body::before {
+    content: "";
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    inset: 0;
+    z-index: -2;
+
+    background-image: url("https://cdn.lospec.com/gallery/cats-in-the-blue-lake-731334.gif");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Oscurecimiento */
+.overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0,0,0,0);
     transition: 1.5s ease;
     pointer-events: none;
+    z-index: 1;
 }
 
-.mensaje{
-    position: absolute;
-    top: 100px;
-    width: 100%;
+/* Mensaje adaptable */
+.mensaje {
+    position: fixed;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+
     text-align: center;
     color: white;
-    font-size: 28px;
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.5;
     font-weight: bold;
-    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
+
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    z-index: 3;
 }
 
-.mensaje::after{
-    content:"|";
+.mensaje::after {
+    content: "|";
     animation: blink 1s infinite;
 }
 
-@keyframes blink{
-    0%,50%,100%{opacity:1;}
-    25%,75%{opacity:0;}
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
 }
 
-.opciones p{
-    background:black;
-    padding:12px 20px;
-    color:white;
-    border-radius:5px;
-    font-weight:bold;
-    position:absolute;
+/* Botones */
+.opciones p {
+    background: black;
+    padding: 12px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+
+    position: fixed;
+    z-index: 4;
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
 }
 
-.p1{ top:450px; left:500px; }
-.p2{ top:450px; left:650px; }
-
-.opciones p:hover{
-    background:gray;
-    cursor:pointer;
+.p1 {
+    top: 72%;
+    left: 34%;
 }
 
-.corazones-container{
-    position:fixed;
-    width:100%;
-    height:100%;
-    pointer-events:none;
+.p2 {
+    top: 72%;
+    left: 58%;
 }
 
-.corazon{
-    position:absolute;
-    bottom:-50px;
+.opciones p:hover {
+    background: #333;
+}
+
+/* Corazones y tulipanes */
+.corazones-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.corazon {
+    position: absolute;
+    bottom: -50px;
     animation: flotar linear forwards;
 }
 
-@keyframes flotar{
-    0%{ transform:translateY(0); opacity:1; }
-    100%{ transform:translateY(-100vh); opacity:0; }
+@keyframes flotar {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* Ajustes para celulares verticales */
+@media (max-width: 600px) {
+    body::before {
+        background-position: center center;
+    }
+
+    .mensaje {
+        top: 8%;
+        width: 90%;
+        font-size: clamp(17px, 5vw, 24px);
+        line-height: 1.5;
+    }
+
+    .opciones p {
+        font-size: 14px;
+        padding: 11px 17px;
+    }
+
+    .p1 {
+        top: 72%;
+        left: 20%;
+    }
+
+    .p2 {
+        top: 72%;
+        left: 60%;
+    }
+}
+
+/* Ajustes para pantallas horizontales pequeñas */
+@media (max-height: 500px) {
+    .mensaje {
+        top: 5%;
+        font-size: clamp(16px, 3vw, 22px);
+    }
+
+    .p1, .p2 {
+        top: 75%;
+    }
 }
 </style>
 
 <script>
-document.addEventListener('mousemove', function(e){
+document.addEventListener('mousemove', function(e) {
     const b = document.querySelector('.p1');
-    if(!b) return;
+    if (!b || b.style.display === 'none') return;
 
     const r = b.getBoundingClientRect();
-    const dx = e.clientX - (r.left+r.width/2);
-    const dy = e.clientY - (r.top+r.height/2);
-    const d = Math.sqrt(dx*dx+dy*dy);
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.sqrt(dx * dx + dy * dy);
 
-    if(d < 150){
-        b.style.left = Math.random()*(window.innerWidth-100)+"px";
-        b.style.top = Math.random()*(window.innerHeight-50)+"px";
+    if (d < 110) {
+        const maxX = Math.max(0, window.innerWidth - b.offsetWidth);
+        const maxY = Math.max(0, window.innerHeight - b.offsetHeight);
+
+        b.style.left = Math.random() * maxX + "px";
+        b.style.top = Math.random() * maxY + "px";
+    }
+});
+
+/* Evitar que el botón se salga al cambiar el tamaño */
+window.addEventListener('resize', function() {
+    const b = document.querySelector('.p1');
+    if (!b) return;
+
+    const r = b.getBoundingClientRect();
+
+    if (r.right > window.innerWidth) {
+        b.style.left = Math.max(0, window.innerWidth - b.offsetWidth) + "px";
+    }
+
+    if (r.bottom > window.innerHeight) {
+        b.style.top = Math.max(0, window.innerHeight - b.offsetHeight) + "px";
     }
 });
 
@@ -107,66 +223,73 @@ quiero empezar contigo otra vez.
 
 ¿Me lo permitirías? 💘`;
 
-const textoFinal = `Maje que putas como se ve tambien en la laptop se ve raro jaja ha de ser igual por la resolucion de la pantalla`; // 👈 ESCRIBE AQUÍ TU MENSAJE
+const textoFinal = `Maje que putas como se ve tambien en la laptop se ve raro jaja ha de ser igual por la resolucion de la pantalla`;
 
-let i = 0;
-function escribirTexto(texto){
+function escribirTexto(texto) {
     const el = document.getElementById("mensaje");
-    el.innerHTML = "";
-    i = 0;
+    el.textContent = "";
+    let i = 0;
 
-    function escribir(){
-        if(i < texto.length){
-            el.innerHTML += texto.charAt(i);
+    function escribir() {
+        if (i < texto.length) {
+            el.textContent += texto.charAt(i);
             i++;
             setTimeout(escribir, 40);
         }
     }
+
     escribir();
 }
 
-function dijoSi(){
+let corazonesIniciados = false;
 
+function dijoSi() {
     document.querySelector('.opciones').style.display = 'none';
 
-    document.getElementById("overlay").style.background = "rgba(0,0,0,0.6)";
+    document.getElementById("overlay").style.background =
+        "rgba(0,0,0,0.6)";
 
     const audio = document.getElementById("musica");
-    audio.play();
+    audio.play().catch(() => {
+        console.log("El navegador necesita una interacción para reproducir audio.");
+    });
 
-    setTimeout(()=>{
+    setTimeout(() => {
         escribirTexto(textoFinal);
     }, 1500);
 
-    setTimeout(()=>{
-        for(let i=0;i<30;i++){ crearElemento(); }
-        setInterval(crearElemento,100);
-    }, 1200);
+    if (!corazonesIniciados) {
+        corazonesIniciados = true;
+
+        for (let i = 0; i < 30; i++) {
+            crearElemento();
+        }
+
+        setInterval(crearElemento, 300);
+    }
 }
 
-function crearElemento(){
+function crearElemento() {
     const c = document.querySelector('.corazones-container');
     const e = document.createElement('div');
     e.classList.add('corazon');
 
-    e.innerHTML = Math.random()>0.5 ? "🌷" : "❤️";
-    e.style.left = Math.random()*100+"vw";
-    e.style.fontSize = (Math.random()*30+15)+"px";
-    e.style.animationDuration = (Math.random()*3+3)+"s";
+    e.textContent = Math.random() > 0.5 ? "🌷" : "❤️";
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.fontSize = (Math.random() * 20 + 15) + "px";
+    e.style.animationDuration = (Math.random() * 3 + 3) + "s";
 
     c.appendChild(e);
-    setTimeout(()=>e.remove(),5000);
+
+    setTimeout(() => e.remove(), 6000);
 }
 
-window.onload = ()=>{
+window.onload = () => {
     const audio = document.getElementById("musica");
-    audio.volume = 0.03; // 👈 volumen de 0.0 a 1.0
+    audio.volume = 0.03;
     escribirTexto(textoInicial);
-}
-
-
+};
 </script>
-
 </head>
 
 <body>
